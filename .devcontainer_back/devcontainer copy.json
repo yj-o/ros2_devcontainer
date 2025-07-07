@@ -1,0 +1,74 @@
+{
+  /* -------------------------------------------------------------------------- */
+  /*                         Image & Build Configuration                        */
+  /* -------------------------------------------------------------------------- */
+  "version": "2.0.0",
+  "dockerFile": "dockerfile",
+  "context": ".",
+  "build": {
+	"args": {
+	  "ROS_DISTRO": "jazzy",
+	  "USERNAME": "rdev"
+	}
+  },
+
+  /* -------------------------------------------------------------------------- */
+  /*                        Workspace & User Settings                           */
+  /* -------------------------------------------------------------------------- */
+  "remoteUser": "rdev",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/rdev/ros_ws,type=bind",
+  "workspaceFolder": "/home/rdev/ros_ws",
+
+  // "onCreateCommand": "xhost +local:docker",
+  // "postCreateCommand": "/usr/local/bin/build_ws",
+
+  /* -------------------------------------------------------------------------- */
+  /*                        Container Runtime Arguments                         */
+  /* -------------------------------------------------------------------------- */
+  "runArgs": [
+	"--name=ros2_container",  // sets the name of the container
+	"--hostname=ros2_container",
+	"--cap-add=SYS_PTRACE",  // adds the ability to use ptrace for debugging
+	"--security-opt", "seccomp=unconfined", // disables seccomp security profile
+	"--ipc=host", // allow the container to share the same Inter-Process Communcation (IPC) namespace as the host
+	"--device=/dev/net/tun",
+	"--cap-add=NET_ADMIN",
+	"--cap-add=NET_RAW"
+  ],
+  // "mounts": [
+  //   "source=${localWorkspaceFolder}/.home/bash_history,target=/home/rdev/.bash_history,type=bind",
+  //   "source=${localWorkspaceFolder}/.home/bashrc,target=/home/rdev/.bashrc,type=bind",
+  //   "source=${localWorkspaceFolder}/.home/tailscale-state,target=/var/lib/tailscale,type=bind"
+  // ],
+  "features": {
+    "ghcr.io/tailscale/codespace/tailscale": {}
+  },
+  /* -------------------------------------------------------------------------- */
+  /*                        Container Environment Variables                     */
+  /* -------------------------------------------------------------------------- */
+  "containerEnv": {
+	"PULSE_SERVER": "${localEnv:PULSE_SERVER}"
+  },
+
+  /* -------------------------------------------------------------------------- */
+  /*                        VS Code Customizations                              */
+  /* -------------------------------------------------------------------------- */
+  "customizations": {
+	"vscode": {
+	  "extensions": [
+		"betwo.b2-catkin-tools",
+		// "DotJoshJohnson.xml",
+		// "ms-azuretools.vscode-docker",
+		// "ms-iot.vscode-ros",
+		// "ms-python.python",
+		// "ms-vscode.cpptools",
+		// "redhat.vscode-yaml",
+		// "smilerobotics.urdf",
+		// "streetsidesoftware.code-spell-checker",
+		// "twxs.cmake",
+		// "yzhang.markdown-all-in-one",
+		// "zachflower.uncrustify"
+	  ]
+	}
+  }
+}
